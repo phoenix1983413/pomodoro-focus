@@ -1,0 +1,51 @@
+{
+  "name": "番茄工作钟 · Pomodoro Focus",
+  "short_name": "番茄钟",
+  "description": "轻量、离线可用、可装到桌面当独立 App 用的番茄工作法计时器。支持多任务标签、深色模式自动切换、灵动岛/锁屏状态。",
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "fullscreen", "minimal-ui"],
+  "orientation": "portrait",
+  "background_color": "#F5F5F7",
+  "theme_color": "#0066CC",
+  "categories": ["productivity", "lifestyle", "utilities"],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "开始一个番茄",
+      "short_name": "开始",
+      "description": "直接打开计时页，立即开始第一个番茄",
+      "url": "./index.html?action=start",
+      "icons": [
+        { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" }
+      ]
+    },
+    {
+      "name": "查看统计",
+      "short_name": "统计",
+      "description": "看看今天的番茄钟完成情况",
+      "url": "./index.html?page=stats",
+      "icons": [
+        { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" }
+      ]
+    }
+  ],
+  "prefer_related_applications": false,
+  "edge_side_panel": { "preferred_width": 480 }
+}
