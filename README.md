@@ -6,6 +6,27 @@
 
 ---
 
+## 🔗 线上地址（已部署）
+
+**https://phoenix1983413.github.io/pomodoro-focus/**
+
+仓库：https://github.com/phoenix1983413/pomodoro-focus
+
+托管在 GitHub Pages，自带 HTTPS（Service Worker 和「添加到主屏幕」的硬性前提）。
+部署方式：`main` 分支根目录直接发布，无构建步骤。
+
+### 装到手机（3 步）
+
+**iPhone / Safari**
+1. Safari 打开上面的网址
+2. 点底部分享按钮 ⬆️
+3. 选「添加到主屏幕」
+
+**Android / Chrome**
+打开网址 → 页面底部会弹出安装条，点「安装」；或右上 ⋮ → 「安装应用」
+
+---
+
 ## 一、这个包里有什么
 
 ```
@@ -13,6 +34,7 @@ pomodoro-focus-pwa/
 ├── index.html              应用本体（V2 全部功能 + PWA 能力）
 ├── manifest.json           App 身份：名字、图标、启动方式、快捷方式
 ├── sw.js                   Service Worker：离线缓存
+├── .nojekyll               关闭 GitHub Pages 的 Jekyll 处理（勿删）
 ├── icons/
 │   ├── icon-192.png        图标 192（Android / manifest）
 │   ├── icon-512.png        图标 512（Android / 启动画面）
@@ -53,11 +75,34 @@ python3 -m http.server 8080 --bind 0.0.0.0
 
 | 方案 | 耗时 | 适合 | 命令 |
 |---|---|---|---|
+| **GitHub Pages**（当前使用） | 1 分钟 | 想长期维护 / 有仓库 | 见下方「GitHub Pages 说明」 |
 | **Vercel** | 1 分钟 | 最快，自带 HTTPS | `npx vercel --prod` 然后选目录 |
 | **Netlify Drop** | 30 秒 | 不想装东西，拖拽上传 | 打开 app.netlify.com/drop 拖整个文件夹 |
-| **GitHub Pages** | 5 分钟 | 想长期维护 / 有仓库 | 推到仓库 → Settings → Pages → 选 main 分支根目录 |
 
 三个都自带 HTTPS，装到手机后离线也能用（首次打开需联网缓存一次）。
+
+### GitHub Pages 说明
+
+本项目已经这么部署了，要点记录一下：
+
+```bash
+cd pomodoro-focus-pwa
+gh repo create pomodoro-focus --public --source=. --remote=origin --push
+# 开启 Pages：main 分支 / 根目录
+gh api -X POST /repos/<用户名>/pomodoro-focus/pages \
+  --input - <<< '{"source":{"branch":"main","path":"/"}}'
+```
+
+**两个关键点**：
+
+1. **子路径兼容**。Pages 项目站点是 `https://<用户名>.github.io/<仓库名>/`，不是根目录。本项目所有资源引用（`manifest.json`、`icons/*`、`sw.js`）都用的**相对路径**，所以开箱即用。如果哪天改成 `/icons/xxx.png` 这种绝对路径，子路径下就会 404。
+2. **`.nojekyll` 不能删**。GitHub Pages 默认跑 Jekyll，会跳过下划线开头的文件（本项目有 `icons/_gen.py`）。放一个空的 `.nojekyll` 在根目录即可关闭 Jekyll。
+
+**验证过的线上状态**：
+- Service Worker 作用域 = `https://phoenix1983413.github.io/pomodoro-focus/` ✓
+- 缓存 6 个核心资产，路径均带 `/pomodoro-focus/` 前缀 ✓
+- `sw.js` 响应头 `content-type: application/javascript` ✓（这点很关键，若被当成 `text/plain` 返回，SW 会注册失败）
+- 断网后重载，应用完整可用 ✓
 
 ---
 
